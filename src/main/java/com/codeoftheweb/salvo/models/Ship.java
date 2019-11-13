@@ -18,11 +18,9 @@ public class Ship {
     @JoinColumn(name = "gameplayer_id")
     private GamePlayer gamePlayer;
 
-    //nuevo agregado
     @ElementCollection
-    @Column(name="ship_location") //dudaa es necesario??
+    @Column(name="ship_location")
     private Set<String> shipLocations;
-    //private List<String> locations;   lo dejo en set?
     private String type;
 
 
@@ -48,7 +46,7 @@ public class Ship {
     }
 
     public GamePlayer getGamePlayer() {
-        return gamePlayer;  //No deberia cambiarlo para q devuelva el player y no gp??
+        return gamePlayer;
     }
 
     public void setGamePlayer(GamePlayer gamePlayer) {

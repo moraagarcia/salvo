@@ -22,8 +22,7 @@ public class GamePlayer {
     @JoinColumn(name = "player_id")
     private Player player;
 
- //lo nuevo agregado
-    @OneToMany(mappedBy ="gamePlayer", fetch = FetchType.EAGER) //DUDAA hay que dejar el mappedby o sacarlo
+    @OneToMany(mappedBy ="gamePlayer", fetch = FetchType.EAGER)
     private Set<Ship> ships;
 
     private Date joinDate;
@@ -31,7 +30,7 @@ public class GamePlayer {
     public GamePlayer(){
     }
 
-    public GamePlayer(Game game,Player player){  //deberia pasar los ships por aca tambien??
+    public GamePlayer(Game game,Player player){
         this.joinDate = new Date();
         this.game = game;
         this.player = player;
