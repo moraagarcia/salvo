@@ -1,5 +1,6 @@
 package com.codeoftheweb.salvo;
 
+import com.codeoftheweb.salvo.models.GamePlayer;
 import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
 import com.codeoftheweb.salvo.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,11 @@ public class AppController {
         return gameRepository.findAll().stream().map(game -> game.makeGameDTO()).collect(Collectors.toList());
     }
 
-    @RequestMapping("/game_view/{playerId}")
-    public Map<String, Object> getGameViewAll(@PathVariable Long playerId) {
-        Player player = playerService.findOwner(ownerId); //DUDAA
-    ...
+    @RequestMapping("/game_view/{gamePlayerId}")
+    public Map<String, Object> getGameViewAll(@PathVariable Long gamePlayerId) {
+        GamePlayer gamePlayer = gamePlayerRepository.findById(gamePlayerId).get(); //DUDAA ESTA BIEN??
+        Map<String, Object>  map = gamePlayer.getGame().makeGameDTO();
+        map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.getShipData()).collect(Collectors.toList()));
+        return map;
     }
 }

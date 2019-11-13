@@ -51,6 +51,7 @@ public class SalvoApplication {
 
 			Set<String> locations1 = new HashSet<>();
 			Set<String> locations2 = new HashSet<>();
+			Set<String> locations3 = new HashSet<>();
 			locations1.add("H1");
 			locations1.add("H2");
 			locations1.add("H3");
@@ -60,12 +61,18 @@ public class SalvoApplication {
 			locations2.add("B2");
 			locations2.add("B3");
 			locations2.add("B4");
+			locations3.add("C1");
+			locations3.add("C2");
+			locations3.add("C3");
 			Ship ship1 = new Ship(gamePlayer3, "Carrier",locations1);
 			Ship ship2 = new Ship(gamePlayer1,"Battleship",locations2);
+			Ship ship3 = new Ship(gamePlayer1,"Destroyer",locations3);
 			gamePlayer3.addShip(ship1);
 			gamePlayer1.addShip(ship2);
+			gamePlayer1.addShip(ship3);
 			shipRepository.save(ship1);
 			shipRepository.save(ship2);
+			shipRepository.save(ship3);
 
 		};
 	}

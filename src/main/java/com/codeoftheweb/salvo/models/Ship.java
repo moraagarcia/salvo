@@ -3,9 +3,8 @@ package com.codeoftheweb.salvo.models;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 public class Ship {
@@ -62,5 +61,12 @@ public class Ship {
 
     public void setLocations(Set<String> locations) {
         this.shipLocations = locations;
+    }
+
+    public Map<String, Object> getShipData(){
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        map.put("type", type);
+        map.put("locations", shipLocations.stream().collect(Collectors.toList()));
+        return map;
     }
 }

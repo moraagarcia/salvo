@@ -84,4 +84,5 @@ public class GamePlayer {
         dto.put("player", this.getPlayer().getPlayerData());
         return dto;
     }
+
 }
