@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,9 +30,11 @@ public class AppController {
 
     @RequestMapping("/game_view/{gamePlayerId}")
     public Map<String, Object> getGameViewAll(@PathVariable Long gamePlayerId) {
-        GamePlayer gamePlayer = gamePlayerRepository.findById(gamePlayerId).get(); //DUDAA ESTA BIEN??
+        Optional<GamePlayer> optionalGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+        if (!optionalGamePlayer.isPresent()) return null;
+        GamePlayer gamePlayer = optionalGamePlayer.get();
         Map<String, Object>  map = gamePlayer.getGame().makeGameDTO();
-        map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.getShipData()).collect(Collectors.toList()));
+        map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.makeShipDTO()).collect(Collectors.toList()));
         return map;
     }
 }

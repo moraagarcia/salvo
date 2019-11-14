@@ -47,11 +47,14 @@ public class SalvoApplication {
 			Game game2 = new Game();
 			gameRepository.save(game2);
 			GamePlayer gamePlayer3 = new GamePlayer(game2,player3);
+			GamePlayer gamePlayer4 = new GamePlayer(game2,player2);
 			gamePlayerRepository.save(gamePlayer3);
+			gamePlayerRepository.save(gamePlayer4);
 
 			Set<String> locations1 = new HashSet<>();
 			Set<String> locations2 = new HashSet<>();
 			Set<String> locations3 = new HashSet<>();
+			Set<String> locations4 = new HashSet<>();
 			locations1.add("H1");
 			locations1.add("H2");
 			locations1.add("H3");
@@ -64,15 +67,23 @@ public class SalvoApplication {
 			locations3.add("C1");
 			locations3.add("C2");
 			locations3.add("C3");
+			locations4.add("D5");
+			locations4.add("D6");
 			Ship ship1 = new Ship(gamePlayer3, "Carrier",locations1);
 			Ship ship2 = new Ship(gamePlayer1,"Battleship",locations2);
 			Ship ship3 = new Ship(gamePlayer1,"Destroyer",locations3);
+			Ship ship4 = new Ship(gamePlayer4,"Patrol Boat",locations4);
+			Ship ship5 = new Ship(gamePlayer2, "Patrol Boat",locations4);
 			gamePlayer3.addShip(ship1);
 			gamePlayer1.addShip(ship2);
 			gamePlayer1.addShip(ship3);
+			gamePlayer4.addShip(ship4);
+			gamePlayer2.addShip(ship5);
 			shipRepository.save(ship1);
 			shipRepository.save(ship2);
 			shipRepository.save(ship3);
+			shipRepository.save(ship4);
+			shipRepository.save(ship5);
 
 		};
 	}

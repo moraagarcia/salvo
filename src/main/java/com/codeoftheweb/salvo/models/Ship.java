@@ -61,7 +61,7 @@ public class Ship {
         this.shipLocations = locations;
     }
 
-    public Map<String, Object> getShipData(){
+    public Map<String, Object> makeShipDTO(){
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("type", type);
         map.put("locations", shipLocations.stream().collect(Collectors.toList()));
