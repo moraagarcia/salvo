@@ -35,6 +35,9 @@ public class AppController {
         GamePlayer gamePlayer = optionalGamePlayer.get();
         Map<String, Object>  map = gamePlayer.getGame().makeGameDTO();
         map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.makeShipDTO()).collect(Collectors.toList()));
+        map.put("salvoes",gamePlayer.getGame().getGamePlayers().stream().flatMap(gamePlayer1 -> gamePlayer1.getSalvoes().stream().map(salvo-> salvo.makeSalvoDTO())).collect(Collectors.toList()));
         return map;
     }
+
+
 }

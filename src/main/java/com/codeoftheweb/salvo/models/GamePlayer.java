@@ -17,13 +17,16 @@ public class GamePlayer {
     @JoinColumn(name = "game_id")
     private Game game;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "player_id")
     private Player player;
 
     @OneToMany(mappedBy ="gamePlayer", fetch = FetchType.EAGER)
     private Set<Ship> ships;
+
+    @OneToMany(mappedBy ="gamePlayer", fetch = FetchType.EAGER)
+    private Set<Salvo> salvoes;
+
 
     private Date joinDate;
 
@@ -35,10 +38,22 @@ public class GamePlayer {
         this.game = game;
         this.player = player;
         this.ships = new HashSet<>();
+        this.salvoes = new HashSet<Salvo>();
     }
 
     public void addShip(Ship ship) {
         ships.add(ship);
+    }
+
+    public Map<String, Object> makePlayerDTO() {
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("id", this.getId());
+        dto.put("player", this.getPlayer().makePlayerDTO());
+        return dto;
+    }
+
+    public void playTurn(Salvo salvo){ //o addSalvo
+        this.salvoes.add(salvo);
     }
 
     public long getId() {
@@ -77,11 +92,11 @@ public class GamePlayer {
         this.joinDate = joinDate;
     }
 
-    public Map<String, Object> makePlayerDTO() {
-        Map<String, Object> dto = new LinkedHashMap<String, Object>();
-        dto.put("id", this.getId());
-        dto.put("player", this.getPlayer().makePlayerDTO());
-        return dto;
+    public Set<Salvo> getSalvoes() {
+        return salvoes;
     }
 
+    public void setSalvoes(Set<Salvo> salvoes) {
+        this.salvoes = salvoes;
+    }
 }

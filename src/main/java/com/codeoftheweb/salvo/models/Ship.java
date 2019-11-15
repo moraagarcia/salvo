@@ -23,7 +23,6 @@ public class Ship {
     private Set<String> shipLocations;
     private String type;
 
-
     public Ship(){
     }
 
@@ -31,6 +30,13 @@ public class Ship {
         this.gamePlayer = gamePlayer;
         this.type = type;
         this.shipLocations = locations;
+    }
+
+    public Map<String, Object> makeShipDTO(){
+        Map<String, Object> dto = new LinkedHashMap<String, Object>();
+        dto.put("type", type);
+        dto.put("locations", shipLocations.stream().collect(Collectors.toList()));
+        return dto;
     }
 
     public long getId() {
@@ -53,18 +59,11 @@ public class Ship {
         this.gamePlayer = gamePlayer;
     }
 
-    public Set<String> getLocations() {
+    public Set<String> getShipLocations() {
         return shipLocations;
     }
 
-    public void setLocations(Set<String> locations) {
-        this.shipLocations = locations;
-    }
-
-    public Map<String, Object> makeShipDTO(){
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        map.put("type", type);
-        map.put("locations", shipLocations.stream().collect(Collectors.toList()));
-        return map;
+    public void setShipLocations(Set<String> shipLocations) {
+        this.shipLocations = shipLocations;
     }
 }
