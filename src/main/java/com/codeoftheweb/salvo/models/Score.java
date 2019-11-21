@@ -1,6 +1,5 @@
 package com.codeoftheweb.salvo.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -35,11 +34,10 @@ public class Score {
         this.finishDate = finishDate;
     }
 
-    @JsonIgnore
     public long getId() {
         return id;
     }
-    @JsonIgnore
+
     public Player getPlayer() {
         return player;
     }
@@ -47,7 +45,7 @@ public class Score {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    @JsonIgnore
+
     public Game getGame() {
         return game;
     }
@@ -63,7 +61,7 @@ public class Score {
     public void setScore(int score) {
         this.score = score;
     }
-    @JsonIgnore
+
     public Date getFinishDate() {
         return finishDate;
     }
