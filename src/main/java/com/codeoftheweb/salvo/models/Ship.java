@@ -19,7 +19,7 @@ public class Ship {
     private GamePlayer gamePlayer;
 
     @ElementCollection
-    @Column(name="ship_location")
+    @Column(name="shipLocations")
     private Set<String> shipLocations;
     private String type;
 
