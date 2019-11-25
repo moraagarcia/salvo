@@ -52,7 +52,7 @@ public class GamePlayer {
         return dto;
     }
 
-    public void playTurn(Salvo salvo){ //o addSalvo
+    public void addSalvo(Salvo salvo){ //o addSalvo
         this.salvoes.add(salvo);
     }
 
