@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -105,34 +106,39 @@ public class SalvoApplication {
 			GamePlayer gamePlayer15 = new GamePlayer(game8,player1);
 			GamePlayer gamePlayer16 = new GamePlayer(game8,player6);
 
-			gameRepository.saveAll(Arrays.asList(game1,game2,game3,game4,game5,game6,game7,game8));
-			gamePlayerRepository.saveAll(Arrays.asList(gamePlayer1,gamePlayer2,gamePlayer3,gamePlayer4,gamePlayer5,gamePlayer6,gamePlayer7,gamePlayer8,gamePlayer9,gamePlayer10,gamePlayer11,gamePlayer12,gamePlayer13,gamePlayer14,gamePlayer15,gamePlayer16));
+			Game game9 = new Game();
+			Date startDate9 = Date.from(startDate8.toInstant().plusSeconds(3600));
+			game9.setCreationDate(startDate9);
+			GamePlayer gamePlayer17 = new GamePlayer(game9,player3);
+
+			gameRepository.saveAll(Arrays.asList(game1,game2,game3,game4,game5,game6,game7,game8,game9));
+			gamePlayerRepository.saveAll(Arrays.asList(gamePlayer1,gamePlayer2,gamePlayer3,gamePlayer4,gamePlayer5,gamePlayer6,gamePlayer7,gamePlayer8,gamePlayer9,gamePlayer10,gamePlayer11,gamePlayer12,gamePlayer13,gamePlayer14,gamePlayer15,gamePlayer16,gamePlayer17));
 
 			//inicializo los ships con sus respectivas locaciones
-            Set<String> locations1 = Stream.of("H1", "H2", "H3","H4","H5").collect(Collectors.toSet());
-            Set<String> locations2 = Stream.of("B1", "B2", "B3","B4").collect(Collectors.toSet());
-            Set<String> locations3 = Stream.of("C1", "C2", "C3").collect(Collectors.toSet());
-            Set<String> locations4 = Stream.of("D5", "D6").collect(Collectors.toSet());
-			Set<String> locations5 = Stream.of("G6", "H6","I6").collect(Collectors.toSet());
-			Set<String> locations6 = Stream.of("A10","B10").collect(Collectors.toSet());
-			Set<String> locations7 = Stream.of("J8","J9","J10").collect(Collectors.toSet());
-			Set<String> locations8 = Stream.of("H5","I5","J5").collect(Collectors.toSet());
-			Set<String> locations9 = Stream.of("J2","J3","J4","J5","J6").collect(Collectors.toSet());
-			Set<String> locations10 = Stream.of("C9","C10").collect(Collectors.toSet());
-			Set<String> locations11 = Stream.of("A10","B10","C10","D10").collect(Collectors.toSet());
-			Set<String> locations12 = Stream.of("J1","J2").collect(Collectors.toSet());
-			Set<String> locations13 = Stream.of("G4","G5","G6").collect(Collectors.toSet());
-			Set<String> locations14 = Stream.of("F1","F2","F3").collect(Collectors.toSet());
-			Set<String> locations15 = Stream.of("F5","G5","H5").collect(Collectors.toSet());
-			Set<String> locations16 = Stream.of("D1","E1","F1").collect(Collectors.toSet());
-			Set<String> locations17 = Stream.of("H7","H8").collect(Collectors.toSet());
-			Set<String> locations18 = Stream.of("C6","C7","C8","C9","C10").collect(Collectors.toSet());
-			Set<String> locations19 = Stream.of("A8","B8","C8","D8","E8").collect(Collectors.toSet());
-			Set<String> locations20 = Stream.of("D1","D2","D3","D4","D5").collect(Collectors.toSet());
-			Set<String> locations21 = Stream.of("C1","D1","E1").collect(Collectors.toSet());
-			Set<String> locations22 = Stream.of("H4","H5","H6","H7").collect(Collectors.toSet());
-			Set<String> locations23 = Stream.of("J1","J2","J3","J4").collect(Collectors.toSet());
-			Set<String> locations24 = Stream.of("G5","G6","G7").collect(Collectors.toSet());
+            List<String> locations1 = Stream.of("H1", "H2", "H3","H4","H5").collect(Collectors.toList());
+            List<String> locations2 = Stream.of("B1", "B2", "B3","B4").collect(Collectors.toList());
+            List<String> locations3 = Stream.of("C1", "C2", "C3").collect(Collectors.toList());
+            List<String> locations4 = Stream.of("D5", "D6").collect(Collectors.toList());
+			List<String> locations5 = Stream.of("G6", "H6","I6").collect(Collectors.toList());
+			List<String> locations6 = Stream.of("A10","B10").collect(Collectors.toList());
+			List<String> locations7 = Stream.of("J8","J9","J10").collect(Collectors.toList());
+			List<String> locations8 = Stream.of("H5","I5","J5").collect(Collectors.toList());
+			List<String> locations9 = Stream.of("J2","J3","J4","J5","J6").collect(Collectors.toList());
+			List<String> locations10 = Stream.of("C9","C10").collect(Collectors.toList());
+			List<String> locations11 = Stream.of("A10","B10","C10","D10").collect(Collectors.toList());
+			List<String> locations12 = Stream.of("J1","J2").collect(Collectors.toList());
+			List<String> locations13 = Stream.of("G4","G5","G6").collect(Collectors.toList());
+			List<String> locations14 = Stream.of("F1","F2","F3").collect(Collectors.toList());
+			List<String> locations15 = Stream.of("F5","G5","H5").collect(Collectors.toList());
+			List<String> locations16 = Stream.of("D1","E1","F1").collect(Collectors.toList());
+			List<String> locations17 = Stream.of("H7","H8").collect(Collectors.toList());
+			List<String> locations18 = Stream.of("C6","C7","C8","C9","C10").collect(Collectors.toList());
+			List<String> locations19 = Stream.of("A8","B8","C8","D8","E8").collect(Collectors.toList());
+			List<String> locations20 = Stream.of("D1","D2","D3","D4","D5").collect(Collectors.toList());
+			List<String> locations21 = Stream.of("C1","D1","E1").collect(Collectors.toList());
+			List<String> locations22 = Stream.of("H4","H5","H6","H7").collect(Collectors.toList());
+			List<String> locations23 = Stream.of("J1","J2","J3","J4").collect(Collectors.toList());
+			List<String> locations24 = Stream.of("G5","G6","G7").collect(Collectors.toList());
 
 			Ship ship1 = new Ship(gamePlayer3, "Carrier",locations1);
 			Ship ship2 = new Ship(gamePlayer1,"Battleship",locations2);
@@ -192,22 +198,22 @@ public class SalvoApplication {
 
 			//inicializo los salvos, los guardo y se los asigno a los players
 			//primer turno
-            Set<String> salvoLocations1 = Stream.of("A1", "B7", "H3","J2","C8").collect(Collectors.toSet());
-            Set<String> salvoLocations2 = Stream.of("F6", "D5", "E9","B2","C1").collect(Collectors.toSet());
-            Set<String> salvoLocations3 = Stream.of("C7", "D6", "J9","A10","D2").collect(Collectors.toSet());
-            Set<String> salvoLocations4 = Stream.of("H1", "H2", "H3","E2","G4").collect(Collectors.toSet());
-			Set<String> salvoLocations5 = Stream.of("H2", "F4", "C8","A9","B7").collect(Collectors.toSet());
-			Set<String> salvoLocations6 = Stream.of("I2", "E6", "D3","F1","G10").collect(Collectors.toSet());
-			Set<String> salvoLocations7 = Stream.of("B4", "G6", "B9","I3","H1").collect(Collectors.toSet());
-			Set<String> salvoLocations8 = Stream.of("G3", "A1", "I9","B4","J5").collect(Collectors.toSet());
-			Set<String> salvoLocations9 = Stream.of("C8", "F7", "D1","H2","B7").collect(Collectors.toSet());
-			Set<String> salvoLocations10 = Stream.of("J7", "F9", "A9","B10","C2").collect(Collectors.toSet());
-			Set<String> salvoLocations11 = Stream.of("H7", "I1", "B9","C3","D2").collect(Collectors.toSet());
-			Set<String> salvoLocations12 = Stream.of("H2", "B5", "I7","J2","G1").collect(Collectors.toSet());
-			Set<String> salvoLocations13 = Stream.of("A10", "I8", "G4","H10","C1").collect(Collectors.toSet());
-			Set<String> salvoLocations14 = Stream.of("I7", "E3", "G4","A3","H8").collect(Collectors.toSet());
-			Set<String> salvoLocations15 = Stream.of("F3", "D9", "I9","J6","E3").collect(Collectors.toSet());
-			Set<String> salvoLocations16 = Stream.of("J3", "B8", "C3","I9","F7").collect(Collectors.toSet());
+            List<String> salvoLocations1 = Stream.of("A1", "B7", "H3","J2","C8").collect(Collectors.toList());
+            List<String> salvoLocations2 = Stream.of("F6", "D5", "E9","B2","C1").collect(Collectors.toList());
+            List<String> salvoLocations3 = Stream.of("C7", "D6", "J9","A10","D2").collect(Collectors.toList());
+            List<String> salvoLocations4 = Stream.of("H1", "H2", "H3","E2","G4").collect(Collectors.toList());
+			List<String> salvoLocations5 = Stream.of("H2", "F4", "C8","A9","B7").collect(Collectors.toList());
+			List<String> salvoLocations6 = Stream.of("I2", "E6", "D3","F1","G10").collect(Collectors.toList());
+			List<String> salvoLocations7 = Stream.of("B4", "G6", "B9","I3","H1").collect(Collectors.toList());
+			List<String> salvoLocations8 = Stream.of("G3", "A1", "I9","B4","J5").collect(Collectors.toList());
+			List<String> salvoLocations9 = Stream.of("C8", "F7", "D1","H2","B7").collect(Collectors.toList());
+			List<String> salvoLocations10 = Stream.of("J7", "F9", "A9","B10","C2").collect(Collectors.toList());
+			List<String> salvoLocations11 = Stream.of("H7", "I1", "B9","C3","D2").collect(Collectors.toList());
+			List<String> salvoLocations12 = Stream.of("H2", "B5", "I7","J2","G1").collect(Collectors.toList());
+			List<String> salvoLocations13 = Stream.of("A10", "I8", "G4","H10","C1").collect(Collectors.toList());
+			List<String> salvoLocations14 = Stream.of("I7", "E3", "G4","A3","H8").collect(Collectors.toList());
+			List<String> salvoLocations15 = Stream.of("F3", "D9", "I9","J6","E3").collect(Collectors.toList());
+			List<String> salvoLocations16 = Stream.of("J3", "B8", "C3","I9","F7").collect(Collectors.toList());
 
 
 			Salvo salvo1 = new Salvo(gamePlayer1,salvoLocations1,1);
@@ -231,8 +237,8 @@ public class SalvoApplication {
 			salvoRepository.saveAll(Arrays.asList(salvo1,salvo2,salvo3,salvo4,salvo5,salvo6,salvo7,salvo8,salvo9,salvo10,salvo11,salvo12,salvo13,salvo14,salvo15,salvo16));
 
             //segundo turno
-			Set<String> salvoLocations17 = Stream.of("I6", "E4", "D1","F9","C7").collect(Collectors.toSet());
-			Set<String> salvoLocations18 = Stream.of("B1", "B3", "B4","C2","C3").collect(Collectors.toSet());
+			List<String> salvoLocations17 = Stream.of("I6", "E4", "D1","F9","C7").collect(Collectors.toList());
+			List<String> salvoLocations18 = Stream.of("B1", "B3", "B4","C2","C3").collect(Collectors.toList());
 			Salvo salvo17 = new Salvo(gamePlayer1,salvoLocations17,2);
 			Salvo salvo18 = new Salvo(gamePlayer2,salvoLocations18,2);
 			salvoRepository.saveAll(Arrays.asList(salvo17,salvo18));
@@ -286,7 +292,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/games").permitAll()
 				.antMatchers("/api/players").permitAll()
 				.antMatchers("/web/game.html?gp=*", "/api/game_view/*").hasAuthority("USER")
-				.antMatchers("/rest").denyAll()
+				//.antMatchers("/rest").denyAll()
+				.antMatchers("/api/game/{gameId}/players").permitAll()
 				.anyRequest().denyAll();
 
 		http.formLogin()

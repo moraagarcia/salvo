@@ -4,8 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,7 +20,7 @@ public class Salvo {
 
     @ElementCollection
     @Column(name="salvoes_location")
-    private Set<String> salvoesLocations;
+    private List<String> salvoesLocations;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "gamePlayer_id")
@@ -28,7 +28,7 @@ public class Salvo {
 
     public Salvo(){
     }
-    public Salvo(GamePlayer gamePlayer, Set<String> salvoesLocations,int turn){
+    public Salvo(GamePlayer gamePlayer, List<String> salvoesLocations,int turn){
         this.gamePlayer = gamePlayer;
         this.salvoesLocations = salvoesLocations;
         this.turn = turn;
@@ -62,11 +62,11 @@ public class Salvo {
         this.gamePlayer = gamePlayer;
     }
 
-    public Set<String> getSalvoesLocations() {
+    public List<String> getSalvoesLocations() {
         return salvoesLocations;
     }
 
-    public void setSalvoesLocations(Set<String> salvoesLocations) {
+    public void setSalvoesLocations(List<String> salvoesLocations) {
         this.salvoesLocations = salvoesLocations;
     }
 
