@@ -285,15 +285,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				//.antMatchers("/rest/**").hasAuthority("USER")
 				.antMatchers("/web/games.html").permitAll()
 				.antMatchers("/web/**").permitAll()
 				.antMatchers("/api/login","/api/logout").permitAll()
 				.antMatchers("/api/games").permitAll()
 				.antMatchers("/api/players").permitAll()
 				.antMatchers("/web/game.html?gp=*", "/api/game_view/*").hasAuthority("USER")
+				.antMatchers("/api/games/players/{gamePlayerId}/ships").hasAuthority("USER")
 				//.antMatchers("/rest").denyAll()
-				.antMatchers("/api/game/{gameId}/players").permitAll()
+				.antMatchers("/api/game/{gameId}/players").hasAuthority("USER")
 				.anyRequest().denyAll();
 
 		http.formLogin()
