@@ -52,8 +52,12 @@ public class GamePlayer {
         return dto;
     }
 
-    public void addSalvo(Salvo salvo){ //o addSalvo
+    public void addSalvo(Salvo salvo){
         this.salvoes.add(salvo);
+    }
+
+    public GamePlayer getOpponent(){
+        return this.getGame().getGamePlayers().stream().filter(gamePlayer -> gamePlayer.getId() != this.getId()).findFirst().orElse(new GamePlayer());
     }
 
     public Score getScore(){

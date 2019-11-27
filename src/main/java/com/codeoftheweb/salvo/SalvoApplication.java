@@ -27,7 +27,6 @@ import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -293,6 +292,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/web/game.html?gp=*", "/api/game_view/*").hasAuthority("USER")
 				.antMatchers("/api/games/players/{gamePlayerId}/ships").hasAuthority("USER")
 				//.antMatchers("/rest").denyAll()
+				.antMatchers("/api/games/players/{gamePlayerId}/salvoes").hasAuthority("USER")
 				.antMatchers("/api/game/{gameId}/players").hasAuthority("USER")
 				.anyRequest().denyAll();
 

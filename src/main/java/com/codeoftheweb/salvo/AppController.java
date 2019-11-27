@@ -1,10 +1,7 @@
 package com.codeoftheweb.salvo;
 
 import com.codeoftheweb.salvo.models.*;
-import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
-import com.codeoftheweb.salvo.repositories.GameRepository;
-import com.codeoftheweb.salvo.repositories.PlayerRepository;
-import com.codeoftheweb.salvo.repositories.ShipRepository;
+import com.codeoftheweb.salvo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +15,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class AppController {
+
+    @Autowired
+    SalvoRepository salvoRepository;
 
     @Autowired
     ShipRepository shipRepository;
@@ -51,6 +51,21 @@ public class AppController {
         return new LinkedList<>();  //hardcodeado cambiar mas adelante
     }
 
+ /*   //nuevo de tarea10      *estoy probando cualquier cosa ignorar esto*
+    public List<Object> getHits(GamePlayer gamePlayer1, GamePlayer opponent){
+        List<Number> hits = new LinkedList<>();
+        Map<String,Object> map = new LinkedHashMap<>();
+
+        List<Object> dsfs = gamePlayer1.getShips().stream().flatMap(ship -> ship.getShipLocations().stream().map())
+
+    }
+
+    public Map<String,Object> getTurnDamage(GamePlayer gamePlayer1, GamePlayer opponent,Salvo salvo){
+        Map<String,Object> map = new LinkedHashMap<>();
+        map.put("turn", salvo.getTurn());
+        map.put("hitLocations",gamePlayer1.getShips().stream().flatMap(ship -> ship.getShipLocations().stream().filter(shipLocation -> salvo.getSalvoLocations().contains(shipLocation))));
+        List<Object> djfsdf = gamePlayer1.getShips().stream().flatMap(ship -> ship.getShipLocations().stream().filter(shipLocation -> salvo.getSalvoLocations().contains(shipLocation))).collect(Collectors.toList());
+    }*/
 
     @RequestMapping("/game_view/{gamePlayerId}")
     public ResponseEntity<Map<String,Object>> getGameViewAll(@PathVariable Long gamePlayerId,Authentication authentication) {
@@ -60,9 +75,23 @@ public class AppController {
         if (Util.isGuest(authentication) || playerRepository.findByUserName(authentication.getName()).getId() != gamePlayer.getPlayer().getId())
             return new ResponseEntity<>(Util.makeMap("error","You're not authorized to enter"), HttpStatus.UNAUTHORIZED);
         Map<String, Object>  map = gamePlayer.getGame().makeGameDTO();
+        map.put("gameState",getState(gamePlayer, gamePlayer.getOpponent()));
         map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.makeShipDTO()).collect(Collectors.toList()));
         map.put("salvoes",gamePlayer.getGame().getGamePlayers().stream().flatMap(gamePlayer1 -> gamePlayer1.getSalvoes().stream().map(salvo-> salvo.makeSalvoDTO())).collect(Collectors.toList()));
         Map<String,Object> hitsMap = new LinkedHashMap<>();
+
+        //nuevo tarea 10
+    /*    List<GamePlayer> opponentGamePlayerList = gamePlayer.getGame().getGamePlayers().stream().filter(gamePlayer1 -> gamePlayer1.getId() != gamePlayer.getId()).collect(Collectors.toList());
+        if (opponentGamePlayerList.isEmpty()) {
+            hitsMap.put("self",new LinkedList<>());
+            hitsMap.put("opponent", new LinkedList<>());
+        }else{
+            hitsMap.put("self",getHits(gamePlayer,opponentGamePlayerList.get(0)));
+            hitsMap.put("opponent", getHits(opponentGamePlayerList.get(0),gamePlayer));
+        }
+        map.put("hits", hitsMap);
+        return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+*/
         hitsMap.put("self",getHits());
         hitsMap.put("opponent", getHits());
         map.put("hits", hitsMap);
@@ -133,4 +162,33 @@ public class AppController {
         return new ResponseEntity<>(Util.makeMap("OK", "Ships added"),HttpStatus.CREATED);
     }
 
+    @RequestMapping(path = "/games/players/{gamePlayerId}/salvoes", method = RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> saveSalvoes(@PathVariable long gamePlayerId, @RequestBody Salvo salvo, Authentication authentication){
+        if (Util.isGuest(authentication)) return new ResponseEntity<>(Util.makeMap("error", "You're not logged in"),HttpStatus.UNAUTHORIZED);
+        Optional<GamePlayer> optionalGamePlayer = gamePlayerRepository.findById(gamePlayerId);
+        if (!optionalGamePlayer.isPresent()) return new ResponseEntity<>(Util.makeMap("error", "No such gamePlayer"),HttpStatus.UNAUTHORIZED);
+        GamePlayer gamePlayer = optionalGamePlayer.get();
+        if (playerRepository.findByUserName(authentication.getName()).getId() != gamePlayer.getPlayer().getId())
+            return new ResponseEntity<>(Util.makeMap("error", "Wrong player"),HttpStatus.UNAUTHORIZED);
+        List<Salvo> salvoInThisTurn = gamePlayer.getSalvoes().stream().filter(salvo1 -> salvo1.getTurn() == salvo.getTurn()).collect(Collectors.toList());
+        if (!salvoInThisTurn.isEmpty())
+            return new ResponseEntity<>(Util.makeMap("error", "You've already played your turn"),HttpStatus.FORBIDDEN);
+        if (salvo.getSalvoLocations().size() != 5) return new ResponseEntity<>(Util.makeMap("error", "You need to fire 5 shots"),HttpStatus.UNAUTHORIZED);
+        salvo.setTurn(gamePlayer.getSalvoes().size()+1);
+        salvo.setGamePlayer(gamePlayer);
+        salvoRepository.save(salvo);
+        return new ResponseEntity<>(Util.makeMap("OK", "Salvo added"),HttpStatus.CREATED);
+    }
+
+    public String getState(GamePlayer gamePlayerSelf, GamePlayer gamePlayerOpponent){
+        if (gamePlayerSelf.getShips().isEmpty()) return "PLACESHIPS";
+        if (gamePlayerSelf.getGame().getGamePlayers().size() == 1) return "WAITINGFOROPP";
+        if (gamePlayerSelf.getSalvoes().size() < gamePlayerOpponent.getSalvoes().size()) return "PLAY";
+        if (gamePlayerSelf.getSalvoes().size() == gamePlayerOpponent.getSalvoes().size()){
+            if (gamePlayerSelf.getId() < gamePlayerOpponent.getId()) return "PLAY";
+            else return "WAIT";
+        }
+        if (gamePlayerSelf.getSalvoes().size() > gamePlayerOpponent.getSalvoes().size()) return "WAIT";
+        return "LOST";
+    }
 }
