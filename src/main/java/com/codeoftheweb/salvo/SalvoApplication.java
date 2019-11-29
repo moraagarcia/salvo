@@ -139,31 +139,31 @@ public class SalvoApplication {
 			List<String> locations23 = Stream.of("J1","J2","J3","J4").collect(Collectors.toList());
 			List<String> locations24 = Stream.of("G5","G6","G7").collect(Collectors.toList());
 
-			Ship ship1 = new Ship(gamePlayer3, "Carrier",locations1);
-			Ship ship2 = new Ship(gamePlayer1,"Battleship",locations2);
-			Ship ship3 = new Ship(gamePlayer1,"Destroyer",locations3);
-			Ship ship4 = new Ship(gamePlayer4,"Patrol Boat",locations4);
-			Ship ship5 = new Ship(gamePlayer2, "Patrol Boat",locations4);
-			Ship ship6 = new Ship(gamePlayer5,"Submarine",locations5);
-			Ship ship7 = new Ship(gamePlayer6,"Patrol boat",locations6);
-			Ship ship8 = new Ship(gamePlayer7,"Destroyer",locations7);
-			Ship ship9 = new Ship(gamePlayer7,"Submarine",locations8);
-			Ship ship10 = new Ship(gamePlayer8,"Carrier",locations9);
-			Ship ship11 = new Ship(gamePlayer8,"Patrol Boat",locations10);
-			Ship ship12 = new Ship(gamePlayer9,"Battleship",locations11);
-			Ship ship13 = new Ship(gamePlayer9,"Patrol Boat",locations12);
-			Ship ship14 = new Ship(gamePlayer10,"Destroyer",locations13);
-			Ship ship15 = new Ship(gamePlayer10,"Submarine",locations14);
-			Ship ship16 = new Ship(gamePlayer11,"Submarine",locations15);
-			Ship ship17 = new Ship(gamePlayer11,"Destroyer",locations16);
-			Ship ship18 = new Ship(gamePlayer12,"Patrol Boat",locations17);
-			Ship ship19 = new Ship(gamePlayer12,"Carrier",locations18);
-			Ship ship20 = new Ship(gamePlayer13,"Carrier",locations19);
-			Ship ship21 = new Ship(gamePlayer14,"Carrier",locations20);
-			Ship ship22 = new Ship(gamePlayer15,"Destroyer",locations21);
-			Ship ship23 = new Ship(gamePlayer15,"Battleship",locations22);
-			Ship ship24 = new Ship(gamePlayer16,"Battleship",locations23);
-			Ship ship25 = new Ship(gamePlayer16,"Submarine",locations24);
+			Ship ship1 = new Ship(gamePlayer3, "carrier",locations1);
+			Ship ship2 = new Ship(gamePlayer1,"battleship",locations2);
+			Ship ship3 = new Ship(gamePlayer1,"destroyer",locations3);
+			Ship ship4 = new Ship(gamePlayer4,"patrolboat",locations4);
+			Ship ship5 = new Ship(gamePlayer2, "patrolboat",locations4);
+			Ship ship6 = new Ship(gamePlayer5,"submarine",locations5);
+			Ship ship7 = new Ship(gamePlayer6,"patrolboat",locations6);
+			Ship ship8 = new Ship(gamePlayer7,"destroyer",locations7);
+			Ship ship9 = new Ship(gamePlayer7,"submarine",locations8);
+			Ship ship10 = new Ship(gamePlayer8,"carrier",locations9);
+			Ship ship11 = new Ship(gamePlayer8,"patrolboat",locations10);
+			Ship ship12 = new Ship(gamePlayer9,"battleship",locations11);
+			Ship ship13 = new Ship(gamePlayer9,"patrolboat",locations12);
+			Ship ship14 = new Ship(gamePlayer10,"destroyer",locations13);
+			Ship ship15 = new Ship(gamePlayer10,"submarine",locations14);
+			Ship ship16 = new Ship(gamePlayer11,"submarine",locations15);
+			Ship ship17 = new Ship(gamePlayer11,"destroyer",locations16);
+			Ship ship18 = new Ship(gamePlayer12,"patrolboat",locations17);
+			Ship ship19 = new Ship(gamePlayer12,"carrier",locations18);
+			Ship ship20 = new Ship(gamePlayer13,"carrier",locations19);
+			Ship ship21 = new Ship(gamePlayer14,"carrier",locations20);
+			Ship ship22 = new Ship(gamePlayer15,"destroyer",locations21);
+			Ship ship23 = new Ship(gamePlayer15,"battleship",locations22);
+			Ship ship24 = new Ship(gamePlayer16,"battleship",locations23);
+			Ship ship25 = new Ship(gamePlayer16,"submarine",locations24);
 
 
 			//asigno los ships a los gameplayers y guardo los ships
