@@ -1,13 +1,11 @@
 package com.codeoftheweb.salvo.models;
 
 import com.codeoftheweb.salvo.controllers.AppController;
+import com.codeoftheweb.salvo.repositories.ScoreRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Util {
 
@@ -39,5 +37,41 @@ public class Util {
                 return false;
         }
         return true;
+    }
+
+    public static void updateGameScore(GamePlayer gamePlayer,GamePlayer opponent,String gameState,Game game,ScoreRepository scoreRepository){
+        if (gameState == "WON"){
+            Date date = new Date();
+            Score scoreGamePlayer = new Score(game,gamePlayer.getPlayer(),1,date);
+            Score scoreOpponent = new Score(game,opponent.getPlayer(),0,date);
+            scoreRepository.saveAll(Arrays.asList(scoreGamePlayer,scoreOpponent));
+        }
+        if (gameState == "LOST"){
+            Date date = new Date();
+            Score scoreGamePlayer = new Score(game,gamePlayer.getPlayer(),0,date);
+            Score scoreOpponent = new Score(game,opponent.getPlayer(),1,date);
+            scoreRepository.saveAll(Arrays.asList(scoreGamePlayer,scoreOpponent));
+        }
+        if (gameState == "TIE"){
+            Date date = new Date();
+            Score scoreGamePlayer = new Score(game,gamePlayer.getPlayer(),0.5,date);
+            Score scoreOpponent = new Score(game,opponent.getPlayer(),0.5,date);
+            scoreRepository.saveAll(Arrays.asList(scoreGamePlayer,scoreOpponent));
+        }
+    }
+
+    public static String getState(GamePlayer gamePlayerSelf, GamePlayer gamePlayerOpponent, AppController appController){
+        if (gamePlayerSelf.getShips().isEmpty()) return "PLACESHIPS";
+        if (gamePlayerSelf.getGame().getGamePlayers().size() == 1 || gamePlayerOpponent.getShips().isEmpty()) return "WAITINGFOROPP";
+        boolean gamePlayerShipsSunk = allShipsSunk(appController,gamePlayerSelf);
+        boolean opponentShipsSunk = allShipsSunk(appController,gamePlayerOpponent);
+        if (gamePlayerSelf.getSalvoes().size() < gamePlayerOpponent.getSalvoes().size()) return "PLAY";
+        if (gamePlayerSelf.getSalvoes().size() == gamePlayerOpponent.getSalvoes().size()){
+            if (gamePlayerShipsSunk && opponentShipsSunk) return "TIE";
+            if (gamePlayerShipsSunk) return "LOST";
+            if (opponentShipsSunk) return "WON";
+            if (gamePlayerSelf.getId() < gamePlayerOpponent.getId()) return "PLAY";
+        }
+        return "WAIT";
     }
 }
