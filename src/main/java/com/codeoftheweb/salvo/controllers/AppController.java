@@ -69,7 +69,7 @@ public class AppController {
         List<String> hitLocations = getHitLocations(salvo,gamePlayer1);
         map.put("hitLocations",hitLocations);
         map.put("damages",getDamages(damagesMap,hitLocations,gamePlayer1));
-        map.put("missed",gamePlayer1.getShips().size() - hitLocations.size());
+        map.put("missed",salvo.getSalvoLocations().size() - hitLocations.size());
         return map;
     }
 
