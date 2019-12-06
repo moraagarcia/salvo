@@ -6,6 +6,7 @@ import com.codeoftheweb.salvo.models.Util;
 import com.codeoftheweb.salvo.repositories.GamePlayerRepository;
 import com.codeoftheweb.salvo.repositories.PlayerRepository;
 import com.codeoftheweb.salvo.repositories.SalvoRepository;
+import com.codeoftheweb.salvo.repositories.ScoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class SalvoController {
     @Autowired
     SalvoRepository salvoRepository;
 
+    @Autowired
+    ScoreRepository scoreRepository;
+
     @RequestMapping(path = "/games/players/{gamePlayerId}/salvoes", method = RequestMethod.POST)
     public ResponseEntity<Map<String,Object>> saveSalvoes(@PathVariable long gamePlayerId, @RequestBody Salvo salvo, Authentication authentication){
         if (Util.isGuest(authentication))
@@ -48,6 +52,9 @@ public class SalvoController {
         salvo.setTurn(gamePlayer.getSalvoes().size()+1);
         salvo.setGamePlayer(gamePlayer);
         salvoRepository.save(salvo);
+        gamePlayer.addSalvo(salvo);
+        String gameState = Util.getState(gamePlayer);
+        Util.updateGameScore(gamePlayer,gameState, scoreRepository);
         return new ResponseEntity<>(Util.makeMap("OK", "Salvo added"),HttpStatus.CREATED);
     }
 }

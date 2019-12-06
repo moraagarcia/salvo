@@ -1,11 +1,11 @@
 package com.codeoftheweb.salvo.models;
 
-import com.codeoftheweb.salvo.controllers.AppController;
 import com.codeoftheweb.salvo.repositories.ScoreRepository;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Util {
 
@@ -19,10 +19,23 @@ public class Util {
         return authentication == null || authentication instanceof AnonymousAuthenticationToken;
     }
 
-    public static boolean allShipsSunk(AppController appController,GamePlayer gamePlayer){
+    public static List<String> getHitLocations(Salvo salvo,GamePlayer gamePlayer1){
+        return salvo.getSalvoLocations().stream().filter(location -> !(checkHits(location,gamePlayer1.getShips())).isEmpty()).collect(Collectors.toList());
+    }
+
+    public static Map<String,Object> checkHits(String location,Set<Ship> ships){
+        Map<String,Object> map = new LinkedHashMap<>();
+        for (Ship ship : ships) {
+            if (ship.getShipLocations().contains(location))
+                map.put(ship.getType(), location);
+        }
+        return map;
+    }
+
+    public static boolean allShipsSunk(GamePlayer gamePlayer){
         GamePlayer opponent = gamePlayer.getOpponent();
         int[] amountOfHits = {0};
-        opponent.getSalvoes().forEach(salvo -> amountOfHits[0] += appController.getHitLocations(salvo,gamePlayer).size());
+        opponent.getSalvoes().forEach(salvo -> amountOfHits[0] += getHitLocations(salvo,gamePlayer).size());
         return amountOfHits[0] == gamePlayer.getShips().stream().mapToInt(ship -> ship.getShipLocations().size()).sum();
     }
 
@@ -39,7 +52,9 @@ public class Util {
         return true;
     }
 
-    public static void updateGameScore(GamePlayer gamePlayer,GamePlayer opponent,String gameState,Game game,ScoreRepository scoreRepository){
+    public static void updateGameScore(GamePlayer gamePlayer,String gameState,ScoreRepository scoreRepository){
+        GamePlayer opponent = gamePlayer.getOpponent();
+        Game game = gamePlayer.getGame();
         if (gameState == "WON"){
             Date date = new Date();
             Score scoreGamePlayer = new Score(game,gamePlayer.getPlayer(),1,date);
@@ -60,17 +75,21 @@ public class Util {
         }
     }
 
-    public static String getState(GamePlayer gamePlayerSelf, GamePlayer gamePlayerOpponent, AppController appController){
-        if (gamePlayerSelf.getShips().isEmpty()) return "PLACESHIPS";
-        if (gamePlayerSelf.getGame().getGamePlayers().size() == 1 || gamePlayerOpponent.getShips().isEmpty()) return "WAITINGFOROPP";
-        boolean gamePlayerShipsSunk = allShipsSunk(appController,gamePlayerSelf);
-        boolean opponentShipsSunk = allShipsSunk(appController,gamePlayerOpponent);
-        if (gamePlayerSelf.getSalvoes().size() < gamePlayerOpponent.getSalvoes().size()) return "PLAY";
+    public static String getState(GamePlayer gamePlayerSelf){
+        GamePlayer gamePlayerOpponent = gamePlayerSelf.getOpponent();
+        if (gamePlayerSelf.getShips().isEmpty())
+            return "PLACESHIPS";
+        if (gamePlayerSelf.getGame().getGamePlayers().size() == 1 || gamePlayerOpponent.getShips().isEmpty())
+            return "WAITINGFOROPP";
+        if (gamePlayerSelf.getSalvoes().size() < gamePlayerOpponent.getSalvoes().size())
+            return "PLAY";
+        boolean gamePlayerShipsSunk = allShipsSunk(gamePlayerSelf);
+        boolean opponentShipsSunk = allShipsSunk(gamePlayerOpponent);
         if (gamePlayerSelf.getSalvoes().size() == gamePlayerOpponent.getSalvoes().size()){
             if (gamePlayerShipsSunk && opponentShipsSunk) return "TIE";
             if (gamePlayerShipsSunk) return "LOST";
             if (opponentShipsSunk) return "WON";
-            if (gamePlayerSelf.getId() < gamePlayerOpponent.getId()) return "PLAY";
+            else return "PLAY";
         }
         return "WAIT";
     }

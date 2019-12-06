@@ -33,8 +33,7 @@ public class AppController {
         if (Util.isGuest(authentication) || playerRepository.findByUserName(authentication.getName()).getId() != gamePlayer.getPlayer().getId())
             return new ResponseEntity<>(Util.makeMap("error","You're not authorized to enter"), HttpStatus.UNAUTHORIZED);
         GamePlayer opponent = gamePlayer.getOpponent();
-        String gameState = Util.getState(gamePlayer, gamePlayer.getOpponent(),this);
-        if (opponent != null) Util.updateGameScore(gamePlayer, opponent, gameState, gamePlayer.getGame(),scoreRepository);
+        String gameState = Util.getState(gamePlayer);
         Map<String, Object>  map = gamePlayer.getGame().makeGameDTO();
         map.put("gameState",gameState);
         map.put("ships", gamePlayer.getShips().stream().map(ship -> ship.makeShipDTO()).collect(Collectors.toList()));
@@ -66,25 +65,13 @@ public class AppController {
     public Map<String,Object> makeHitsDTO(GamePlayer gamePlayer1,Salvo salvo,Map<String,Integer> damagesMap){
         Map<String,Object> map = new LinkedHashMap<>();
         map.put("turn", salvo.getTurn());
-        List<String> hitLocations = getHitLocations(salvo,gamePlayer1);
+        List<String> hitLocations = Util.getHitLocations(salvo,gamePlayer1);
         map.put("hitLocations",hitLocations);
         map.put("damages",getDamages(damagesMap,hitLocations,gamePlayer1));
         map.put("missed",salvo.getSalvoLocations().size() - hitLocations.size());
         return map;
     }
 
-    public List<String> getHitLocations(Salvo salvo,GamePlayer gamePlayer1){
-        return salvo.getSalvoLocations().stream().filter(location -> !(checkHits(location,gamePlayer1.getShips())).isEmpty()).collect(Collectors.toList());
-    }
-
-    public Map<String,Object> checkHits(String location,Set<Ship> ships){
-        Map<String,Object> map = new LinkedHashMap<>();
-        for (Ship ship : ships) {
-            if (ship.getShipLocations().contains(location))
-                map.put(ship.getType(), location);
-        }
-        return map;
-    }
 
 
     public Map<String,Integer> getDamages(Map<String,Integer> damagesMap,List<String> hitLocations,GamePlayer gamePlayer1){
